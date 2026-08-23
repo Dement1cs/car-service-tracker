@@ -1,11 +1,11 @@
 package com.dima.carservicetracker.service;
 
 import com.dima.carservicetracker.repository.CarRepository;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Service;
 import com.dima.carservicetracker.entity.Car;
+import com.dima.carservicetracker.exception.CarNotFoundException;
 
-import java.sql.SQLOutput;
+import java.util.List;
 
 @Service
 public class CarService {
@@ -17,6 +17,15 @@ public class CarService {
 
     public Car createCar(Car car){
         return carRepository.save(car);
+    }
+
+    public List<Car> getAllCars(){
+        return carRepository.findAll();
+    }
+
+    public  Car getCarById(Long id){
+        return carRepository.findById(id)
+                .orElseThrow(() -> new CarNotFoundException(id));
     }
 }
 

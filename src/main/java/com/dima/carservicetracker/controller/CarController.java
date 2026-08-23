@@ -2,10 +2,10 @@ package com.dima.carservicetracker.controller;
 
 import com.dima.carservicetracker.service.CarService;
 import com.dima.carservicetracker.entity.Car;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/cars")
@@ -19,5 +19,15 @@ public class CarController {
     @PostMapping
     public Car createCar(@RequestBody Car car){
         return carService.createCar(car);
+    }
+
+    @GetMapping
+    public List<Car> getAllCars(){
+        return carService.getAllCars();
+    }
+
+    @GetMapping("/{id}")
+    public Car getCarById(@PathVariable Long id){
+        return carService.getCarById(id);
     }
 }
