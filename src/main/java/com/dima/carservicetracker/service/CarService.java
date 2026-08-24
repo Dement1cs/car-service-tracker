@@ -33,5 +33,20 @@ public class CarService {
                 .orElseThrow(() -> new CarNotFoundException(id));
         carRepository.delete(car);
     }
+
+    public Car updateCar(Long id, Car updatedCar){
+        Car existingCar = carRepository.findById(id)
+                .orElseThrow(() -> new CarNotFoundException(id));
+
+        existingCar.setMake(updatedCar.getMake());
+        existingCar.setModel(updatedCar.getModel());
+        existingCar.setYear(updatedCar.getYear());
+        existingCar.setEngine(updatedCar.getEngine());
+        existingCar.setFuelType(updatedCar.getFuelType());
+        existingCar.setTransmission(updatedCar.getTransmission());
+        existingCar.setRegistrationNumber(updatedCar.getRegistrationNumber());
+        existingCar.setCurrentMileage(updatedCar.getCurrentMileage());
+        return carRepository.save(existingCar);
+    }
 }
 
