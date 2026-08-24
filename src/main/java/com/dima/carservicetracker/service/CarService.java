@@ -23,9 +23,15 @@ public class CarService {
         return carRepository.findAll();
     }
 
-    public  Car getCarById(Long id){
+    public Car getCarById(Long id){
         return carRepository.findById(id)
                 .orElseThrow(() -> new CarNotFoundException(id));
+    }
+
+    public void deleteCar(Long id){
+        Car car = carRepository.findById(id)
+                .orElseThrow(() -> new CarNotFoundException(id));
+        carRepository.delete(car);
     }
 }
 
