@@ -7,6 +7,8 @@ import com.dima.carservicetracker.repository.CarRepository;
 import com.dima.carservicetracker.repository.ServiceRecordRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ServiceRecordService {
 
@@ -30,5 +32,13 @@ public class ServiceRecordService {
         serviceRecord.setCar(car);
 
         return serviceRecordRepository.save(serviceRecord);
+    }
+
+    public List<ServiceRecord> getServiceRecordsByCarId(Long carId) {
+
+        Car car = carRepository.findById(carId)
+                .orElseThrow(() -> new CarNotFoundException(carId));
+
+        return serviceRecordRepository.findAllByCar(car);
     }
 }

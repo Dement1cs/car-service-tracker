@@ -5,6 +5,8 @@ import com.dima.carservicetracker.service.ServiceRecordService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/cars/{carId}/service-records")
 public class ServiceRecordController {
@@ -23,5 +25,12 @@ public class ServiceRecordController {
     ) {
         return serviceRecordService.createServiceRecord(carId, serviceRecord);
     }
+
+    @GetMapping
+    public List<ServiceRecord> getServiceRecords(@PathVariable Long carId) {
+        return serviceRecordService.getServiceRecordsByCarId(carId);
+    }
+
+
 
 }
