@@ -3,6 +3,7 @@ package com.dima.carservicetracker.service;
 import com.dima.carservicetracker.entity.Car;
 import com.dima.carservicetracker.entity.ServiceRecord;
 import com.dima.carservicetracker.exception.CarNotFoundException;
+import com.dima.carservicetracker.exception.ServiceRecordNotFoundException;
 import com.dima.carservicetracker.repository.CarRepository;
 import com.dima.carservicetracker.repository.ServiceRecordRepository;
 import org.springframework.stereotype.Service;
@@ -40,5 +41,18 @@ public class ServiceRecordService {
                 .orElseThrow(() -> new CarNotFoundException(carId));
 
         return serviceRecordRepository.findAllByCar(car);
+    }
+
+    public ServiceRecord getServiceRecordById(Long carId, Long serviceRecordId){
+        Car car = carRepository.findById(carId)
+                .orElseThrow(() -> new CarNotFoundException(carId));
+
+        ServiceRecord serviceRecord = serviceRecordRepository.findById(serviceRecordId)
+                .orElseThrow(() -> new ServiceRecordNotFoundException(serviceRecordId));
+
+        if(!serviceRecord.getCar().getId().equals(car.getId())){
+            throw new ServiceRecordNotFoundException(serviceRecordId);
+        }
+        return serviceRecord;
     }
 }

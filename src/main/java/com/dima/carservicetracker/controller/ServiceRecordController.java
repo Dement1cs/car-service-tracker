@@ -31,6 +31,11 @@ public class ServiceRecordController {
         return serviceRecordService.getServiceRecordsByCarId(carId);
     }
 
-
-
+    @GetMapping("/{serviceRecordId}")
+    public ServiceRecord getServiceRecordById(
+            @PathVariable Long carId,
+            @PathVariable Long serviceRecordId
+    ){
+        return serviceRecordService.getServiceRecordById(carId, serviceRecordId);
+    }
 }
