@@ -38,4 +38,16 @@ public class ServiceRecordController {
     ){
         return serviceRecordService.getServiceRecordById(carId, serviceRecordId);
     }
+
+    @PutMapping("/{serviceRecordId}")
+    public ServiceRecord updateServiceRecord(
+            @PathVariable Long carId,
+            @PathVariable Long serviceRecordId,
+            @RequestBody ServiceRecord updatedRecord
+    ){
+        return serviceRecordService.updateServiceRecord(
+                carId,
+                serviceRecordId,
+                updatedRecord);
+    }
 }

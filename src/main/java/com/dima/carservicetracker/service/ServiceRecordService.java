@@ -40,7 +40,7 @@ public class ServiceRecordService {
         Car car = carRepository.findById(carId)
                 .orElseThrow(() -> new CarNotFoundException(carId));
 
-        return serviceRecordRepository.findAllByCar(car);
+        return serviceRecordRepository.findAllByCarOrderByDateDesc(car);
     }
 
     public ServiceRecord getServiceRecordById(Long carId, Long serviceRecordId){
@@ -54,5 +54,19 @@ public class ServiceRecordService {
             throw new ServiceRecordNotFoundException(serviceRecordId);
         }
         return serviceRecord;
+    }
+
+    public ServiceRecord updateServiceRecord(
+            Long carId,
+            Long serviceRecordId,
+            ServiceRecord updatedRecord
+    ){
+        ServiceRecord existingRecord = getServiceRecordById(carId, serviceRecordId);
+
+        existingRecord.setDate(updatedRecord.getDate());
+        existingRecord.setMileage(updatedRecord.getMileage());
+        existingRecord.setDescription(updatedRecord.getDescription());
+        existingRecord.setCost(updatedRecord.getCost());
+        return serviceRecordRepository.save(existingRecord);
     }
 }

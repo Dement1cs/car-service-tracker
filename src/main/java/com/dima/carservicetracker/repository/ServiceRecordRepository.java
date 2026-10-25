@@ -10,5 +10,5 @@ public interface ServiceRecordRepository
     extends JpaRepository<ServiceRecord, Long>{
     //<ServiceRecord, Long> ServiceRecord - какая сущность, Long - какой тип id
 
-    List<ServiceRecord> findAllByCar(Car car);
+    List<ServiceRecord> findAllByCarOrderByDateDesc(Car car);
 }
