@@ -69,4 +69,10 @@ public class ServiceRecordService {
         existingRecord.setCost(updatedRecord.getCost());
         return serviceRecordRepository.save(existingRecord);
     }
+
+    public void deleteServiceRecord(Long carId, Long serviceRecordId){
+        ServiceRecord serviceRecord = getServiceRecordById(carId,serviceRecordId);
+
+        serviceRecordRepository.delete(serviceRecord);
+    }
 }

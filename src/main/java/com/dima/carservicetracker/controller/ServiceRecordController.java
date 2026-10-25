@@ -50,4 +50,13 @@ public class ServiceRecordController {
                 serviceRecordId,
                 updatedRecord);
     }
+
+    @DeleteMapping("/{serviceRecordId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteServiceRecord(
+        @PathVariable Long carId,
+        @PathVariable Long serviceRecordId
+    ){
+        serviceRecordService.deleteServiceRecord(carId, serviceRecordId);
+    }
 }
