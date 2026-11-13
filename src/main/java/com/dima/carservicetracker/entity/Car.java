@@ -6,6 +6,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "cars")
@@ -13,14 +14,35 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Make must not be blank")
     private String make;
+    @NotBlank(message = "Model must not be blank")
     private String model;
-    private int year;
+    @NotNull (message = "Year is required")
+    @Min(value = 1886, message = "Year must be 1886 or later")
+    private Integer year;
+    @NotBlank
+    @Size(max = 50)
     private String engine;
+    @NotBlank
+    @Pattern(
+            regexp = "(?i)^(Petrol|Diesel|Electric|Petrol Hybrid|Diesel Hybrid" +
+                    "|Plug-in Petrol Hybrid|Plug-in Diesel Hybrid|LPG|CNG|Other)$",
+            message = "Invalid fuel type"
+    )
     private String fuelType;
+    @NotBlank
+    @Pattern(
+            regexp = "(?i)^(Manual|Automatic|CVT|DCT|AMT)$",
+            message = "Invalid transmission type"
+    )
     private String transmission;
+    @NotBlank (message = "Registration Number is required")
+    @Size(max = 20, message = "Regestration number cannot exceed 20 characters")
     private String registrationNumber;
-    private int currentMileage;
+    @NotNull
+    @PositiveOrZero(message = "Current mileage cannot be negative")
+    private Integer currentMileage;
     private LocalDateTime createdAt;
 
     public Car(){
@@ -29,12 +51,12 @@ public class Car {
     public Car(
             String make,
             String model,
-            int year,
+            Integer year,
             String engine,
             String fuelType,
             String transmission,
             String registrationNumber,
-            int currentMileage
+            Integer currentMileage
     ){
         this.make = make;
         this.model = model;
@@ -59,7 +81,7 @@ public class Car {
         return model;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
@@ -79,7 +101,7 @@ public class Car {
         return registrationNumber;
     }
 
-    public int getCurrentMileage() {
+    public Integer getCurrentMileage() {
         return currentMileage;
     }
 
@@ -95,7 +117,7 @@ public class Car {
         this.model = model;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
@@ -115,7 +137,7 @@ public class Car {
         this.registrationNumber = registrationNumber;
     }
 
-    public void setCurrentMileage(int currentMileage) {
+    public void setCurrentMileage(Integer currentMileage) {
         this.currentMileage = currentMileage;
     }
 }

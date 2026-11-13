@@ -4,6 +4,7 @@ import com.dima.carservicetracker.entity.ServiceRecord;
 import com.dima.carservicetracker.service.ServiceRecordService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class ServiceRecordController {
     @ResponseStatus(HttpStatus.CREATED)
     public ServiceRecord createServiceRecord(
             @PathVariable Long carId,
-            @RequestBody ServiceRecord serviceRecord
+            @Valid @RequestBody ServiceRecord serviceRecord
     ) {
         return serviceRecordService.createServiceRecord(carId, serviceRecord);
     }
@@ -43,7 +44,7 @@ public class ServiceRecordController {
     public ServiceRecord updateServiceRecord(
             @PathVariable Long carId,
             @PathVariable Long serviceRecordId,
-            @RequestBody ServiceRecord updatedRecord
+            @Valid @RequestBody ServiceRecord updatedRecord
     ){
         return serviceRecordService.updateServiceRecord(
                 carId,

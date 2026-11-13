@@ -3,6 +3,7 @@ package com.dima.carservicetracker.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import jakarta.validation.constraints.*;
 
 @Entity //сущность
 @Table(name = "service_records") //название таблицы
@@ -12,9 +13,18 @@ public class ServiceRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // сам енерирует id. стратегия -
     private Long id;
+    @NotNull(message = "Date is required")
+    @PastOrPresent(message = "Date can not be in the futre")
     private LocalDate date;
-    private int mileage;
+    @NotNull(message = "Mileage is required")
+    @PositiveOrZero(message = "Mileage cannot be negative")
+    private Integer mileage;
+    @NotBlank(message = "Description mast be not blank")
+    @Size(max = 255)
     private String description;
+    @NotNull(message = "Cost is required")
+    @PositiveOrZero(message = "Cost can not be negative")
+    @Digits(integer = 8,fraction = 2)
     private BigDecimal cost;
 
     @ManyToOne // много записей к одной машине
@@ -26,7 +36,7 @@ public class ServiceRecord {
 
     public ServiceRecord(Car car,
                          LocalDate date,
-                         int mileage,
+                         Integer mileage,
                          String description,
                          BigDecimal cost) {
         this.date = date;
@@ -48,32 +58,35 @@ public class ServiceRecord {
         return date;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public int getMileage() {
+    public Integer getMileage() {
         return mileage;
-    }
-
-    public void setCar(Car car){
-        this.car = car;
-    }
-    public void setMileage(int mileage) {
-        this.mileage = mileage;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public BigDecimal getCost() {
+        return cost;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setCar(Car car){
+        this.car = car;
+    }
+
+    public void setMileage(Integer mileage) {
+        this.mileage = mileage;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public BigDecimal getCost() {
-        return cost;
-    }
+
 
     public void setCost(BigDecimal cost) {
         this.cost = cost;

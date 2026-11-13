@@ -2,6 +2,7 @@ package com.dima.carservicetracker.controller;
 
 import com.dima.carservicetracker.service.CarService;
 import com.dima.carservicetracker.entity.Car;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ public class CarController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Car createCar(@RequestBody Car car){
+    public Car createCar(@Valid @RequestBody Car car){
         return carService.createCar(car);
     }
 
@@ -42,7 +43,7 @@ public class CarController {
     @PutMapping("/{id}")
     public Car updateCar(
         @PathVariable Long id,
-        @RequestBody Car updatedCar
+        @Valid @RequestBody Car updatedCar
     ){
         return carService.updateCar(id, updatedCar);
     }
