@@ -1,5 +1,7 @@
 package com.dima.carservicetracker.controller;
 
+import com.dima.carservicetracker.dto.CarRequest;
+import com.dima.carservicetracker.dto.CarResponse;
 import com.dima.carservicetracker.service.CarService;
 import com.dima.carservicetracker.entity.Car;
 import jakarta.validation.Valid;
@@ -20,17 +22,25 @@ public class CarController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Car createCar(@Valid @RequestBody Car car){
-        return carService.createCar(car);
+    public CarResponse createCar(@Valid @RequestBody CarRequest request){
+        return carService.createCar(request);
+    }
+
+    @PutMapping("/{id}")
+    public CarResponse updateCar(
+            @PathVariable Long id,
+            @Valid @RequestBody CarRequest request
+    ){
+        return carService.updateCar(id, request);
     }
 
     @GetMapping
-    public List<Car> getAllCars(){
+    public List<CarResponse> getAllCars(){
         return carService.getAllCars();
     }
 
     @GetMapping("/{id}")
-    public Car getCarById(@PathVariable Long id){
+    public CarResponse getCarById(@PathVariable Long id){
         return carService.getCarById(id);
     }
 
@@ -38,13 +48,5 @@ public class CarController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCar(@PathVariable Long id){
         carService.deleteCar(id);
-    }
-
-    @PutMapping("/{id}")
-    public Car updateCar(
-        @PathVariable Long id,
-        @Valid @RequestBody Car updatedCar
-    ){
-        return carService.updateCar(id, updatedCar);
     }
 }

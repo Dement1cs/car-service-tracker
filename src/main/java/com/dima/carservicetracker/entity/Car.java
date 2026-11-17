@@ -38,7 +38,7 @@ public class Car {
     )
     private String transmission;
     @NotBlank (message = "Registration Number is required")
-    @Size(max = 20, message = "Regestration number cannot exceed 20 characters")
+    @Size(max = 20, message = "Registration number cannot exceed 20 characters")
     private String registrationNumber;
     @NotNull
     @PositiveOrZero(message = "Current mileage cannot be negative")
