@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
+import jakarta.persistence.PrePersist;
 
 @Entity
 @Table(name = "cars")
@@ -66,7 +67,13 @@ public class Car {
         this.transmission = transmission;
         this.registrationNumber = registrationNumber;
         this.currentMileage = currentMileage;
-        this.createdAt = LocalDateTime.now();
+    }
+
+    @PrePersist
+    public void onCreate(){
+        if(createdAt == null){
+            createdAt = LocalDateTime.now();
+        }
     }
 
     public Long getId() {
@@ -84,7 +91,6 @@ public class Car {
     public Integer getYear() {
         return year;
     }
-
     public String getEngine() {
         return engine;
     }
