@@ -1,5 +1,7 @@
 package com.dima.carservicetracker.controller;
 
+import com.dima.carservicetracker.dto.ServiceRecordRequest;
+import com.dima.carservicetracker.dto.ServiceRecordResponse;
 import com.dima.carservicetracker.entity.ServiceRecord;
 import com.dima.carservicetracker.service.ServiceRecordService;
 import org.springframework.http.HttpStatus;
@@ -20,36 +22,36 @@ public class ServiceRecordController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ServiceRecord createServiceRecord(
+    public ServiceRecordResponse createServiceRecord(
             @PathVariable Long carId,
-            @Valid @RequestBody ServiceRecord serviceRecord
+            @Valid @RequestBody ServiceRecordRequest request
     ) {
-        return serviceRecordService.createServiceRecord(carId, serviceRecord);
+        return serviceRecordService.createServiceRecord(carId, request);
     }
 
     @GetMapping
-    public List<ServiceRecord> getServiceRecords(@PathVariable Long carId) {
+    public List<ServiceRecordResponse> getServiceRecords(@PathVariable Long carId) {
         return serviceRecordService.getServiceRecordsByCarId(carId);
     }
 
     @GetMapping("/{serviceRecordId}")
-    public ServiceRecord getServiceRecordById(
+    public ServiceRecordResponse getServiceRecordById(
             @PathVariable Long carId,
             @PathVariable Long serviceRecordId
     ){
-        return serviceRecordService.getServiceRecordById(carId, serviceRecordId);
+        return serviceRecordService.getServiceRecordResponseById(carId, serviceRecordId);
     }
 
     @PutMapping("/{serviceRecordId}")
-    public ServiceRecord updateServiceRecord(
+    public ServiceRecordResponse updateServiceRecord(
             @PathVariable Long carId,
             @PathVariable Long serviceRecordId,
-            @Valid @RequestBody ServiceRecord updatedRecord
+            @Valid @RequestBody ServiceRecordRequest request
     ){
         return serviceRecordService.updateServiceRecord(
                 carId,
                 serviceRecordId,
-                updatedRecord);
+                request);
     }
 
     @DeleteMapping("/{serviceRecordId}")

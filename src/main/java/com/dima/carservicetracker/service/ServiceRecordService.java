@@ -1,5 +1,7 @@
 package com.dima.carservicetracker.service;
 
+import com.dima.carservicetracker.dto.ServiceRecordRequest;
+import com.dima.carservicetracker.dto.ServiceRecordResponse;
 import com.dima.carservicetracker.entity.Car;
 import com.dima.carservicetracker.entity.ServiceRecord;
 import com.dima.carservicetracker.exception.CarNotFoundException;
@@ -8,6 +10,7 @@ import com.dima.carservicetracker.repository.CarRepository;
 import com.dima.carservicetracker.repository.ServiceRecordRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,24 +26,43 @@ public class ServiceRecordService {
         this.carRepository = carRepository;
     }
 
-    public ServiceRecord createServiceRecord(
+    public ServiceRecordResponse createServiceRecord(
         Long carId,
-        ServiceRecord serviceRecord
+        ServiceRecordRequest request
     ){
         Car car = carRepository.findById(carId)
                 .orElseThrow(() -> new CarNotFoundException(carId));
 
-        serviceRecord.setCar(car);
+        //create new entity
+        ServiceRecord record = new ServiceRecord();
 
-        return serviceRecordRepository.save(serviceRecord);
+        //copy DTO
+        record.setDate(request.getDate());
+        record.setMileage(request.getMileage());
+        record.setDescription(request.getDescription());
+        record.setCost(request.getCost());
+
+        //link it to car
+        record.setCar(car);
+
+        ServiceRecord sevedRecord = serviceRecordRepository.save(record);
+        return toServiceRecordResponse(sevedRecord);
     }
 
-    public List<ServiceRecord> getServiceRecordsByCarId(Long carId) {
+    public List<ServiceRecordResponse> getServiceRecordsByCarId(Long carId) {
 
         Car car = carRepository.findById(carId)
                 .orElseThrow(() -> new CarNotFoundException(carId));
 
-        return serviceRecordRepository.findAllByCarOrderByDateDesc(car);
+        List<ServiceRecord> records = serviceRecordRepository.findAllByCarOrderByDateDesc(car);
+
+        List<ServiceRecordResponse> responses = new ArrayList<>();
+
+        for(ServiceRecord record : records){
+            responses.add(toServiceRecordResponse(record));
+        }
+
+        return responses;
     }
 
     public ServiceRecord getServiceRecordById(Long carId, Long serviceRecordId){
@@ -56,10 +78,17 @@ public class ServiceRecordService {
         return serviceRecord;
     }
 
-    public ServiceRecord updateServiceRecord(
+    public ServiceRecordResponse getServiceRecordResponseById(Long carId, Long serviceRecordId){
+
+        ServiceRecord record = getServiceRecordById(carId, serviceRecordId);
+
+        return toServiceRecordResponse(record);
+    }
+
+    public ServiceRecordResponse updateServiceRecord(
             Long carId,
             Long serviceRecordId,
-            ServiceRecord updatedRecord
+            ServiceRecordRequest updatedRecord
     ){
         ServiceRecord existingRecord = getServiceRecordById(carId, serviceRecordId);
 
@@ -67,12 +96,28 @@ public class ServiceRecordService {
         existingRecord.setMileage(updatedRecord.getMileage());
         existingRecord.setDescription(updatedRecord.getDescription());
         existingRecord.setCost(updatedRecord.getCost());
-        return serviceRecordRepository.save(existingRecord);
+
+        ServiceRecord sevedServiceRecord = serviceRecordRepository.save(existingRecord);
+        return toServiceRecordResponse(sevedServiceRecord);
     }
 
     public void deleteServiceRecord(Long carId, Long serviceRecordId){
         ServiceRecord serviceRecord = getServiceRecordById(carId,serviceRecordId);
 
         serviceRecordRepository.delete(serviceRecord);
+    }
+
+    private ServiceRecordResponse toServiceRecordResponse(
+            ServiceRecord record
+        ){
+        ServiceRecordResponse response = new ServiceRecordResponse();
+
+        response.setId(record.getId());
+        response.setDate(record.getDate());
+        response.setMileage(record.getMileage());
+        response.setDescription(record.getDescription());
+        response.setCost(record.getCost());
+
+        return response;
     }
 }
